@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)file:///Users/petertheisen/Downloads/roadmap.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payments &amp; Integrations Roadmap — Q3–Q4 2026</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f0efed; color: #1a1917;
+    min-height: 100vh; padding: 28px 24px 56px;
+  }
+
+  [contenteditable] { outline: none; border-radius: 3px; cursor: text; transition: background 0.12s, box-shadow 0.12s; }
+  [contenteditable]:hover { background: rgba(0,0,0,0.035); }
+  [contenteditable]:focus { background: #fff; box-shadow: 0 0 0 2px rgba(30,136,229,0.16); }
+  [contenteditable][data-ph]:empty::before { content: attr(data-ph); color: #c0bdb8; pointer-events: none; font-weight: 400; }
+
+  header { margin-bottom: 28px; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; padding: 2px 4px; margin: -2px -4px; display: block; }
+  .header-sub { font-size: 12px; color: #6b6861; margin-top: 4px; padding: 1px 3px; margin-left: -3px; display: block; }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #6b6861; }
+  .legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .edit-hint { font-size: 10.5px; color: #b0ada8; font-style: italic; }
+
+  .roadmap { display: flex; flex-direction: column; gap: 12px; }
+
+  .pillar-row { display: flex; align-items: stretch; background: #fff; border: 1px solid #e5e3de; border-radius: 12px; min-height: 120px; }
+
+  .pillar-label { width: 172px; flex-shrink: 0; padding: 16px 14px; display: flex; flex-direction: column; gap: 10px; border-right: 1px solid #e5e3de; background: #fafaf9; border-radius: 12px 0 0 12px; }
+  .pillar-icon { width: 30px; height: 30px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; margin-bottom: 2px; }
+  .pillar-title    { font-size: 12px; font-weight: 700; line-height: 1.35; display: block; word-break: break-word; }
+  .pillar-subtitle { font-size: 10.5px; color: #6b6861; line-height: 1.45; display: block; word-break: break-word; }
+
+  .initiatives-row { flex: 1; min-width: 0; display: flex; align-items: stretch; gap: 10px; padding: 12px; overflow-x: auto; }
+  .initiatives-row::-webkit-scrollbar { height: 4px; }
+  .initiatives-row::-webkit-scrollbar-thumb { background: #d1cfc9; border-radius: 99px; }
+
+  /* ── Card ── */
+  .initiative { width: 248px; flex-shrink: 0; background: #f8f7f5; border: 1px solid #e5e3de; border-radius: 8px; padding: 12px 12px 12px; display: flex; flex-direction: column; transition: border-color 0.15s, opacity 0.15s; position: relative; }
+  .initiative:hover { border-color: #c8c5be; }
+  .initiative.is-dragging { opacity: 0.3; }
+
+  .drop-indicator { width: 3px; flex-shrink: 0; background: #3b82f6; border-radius: 3px; align-self: stretch; min-height: 80px; pointer-events: none; box-shadow: 0 0 6px rgba(59,130,246,0.4); }
+
+  /* drag handle */
+  .drag-handle { display: none; flex-shrink: 0; width: 16px; align-self: flex-start; padding-top: 2px; cursor: grab; border-radius: 3px; align-items: center; justify-content: center; transition: background 0.1s; margin-right: 2px; }
+  .drag-handle:active { cursor: grabbing; }
+  .drag-handle:hover { background: #eeece8; }
+  .initiative:hover .drag-handle { display: flex; }
+
+  .initiative-top { display: flex; align-items: flex-start; gap: 4px; margin-bottom: 8px; }
+  .initiative-title { font-size: 12px; font-weight: 700; color: #1a1917; line-height: 1.35; flex: 1; padding: 1px 3px; margin: -1px 0 -1px -3px; }
+  .top-right { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+
+  .remove-init-btn { display: none; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 4px; border: none; background: transparent; color: #c8c5be; font-size: 13px; cursor: pointer; padding: 0; line-height: 1; font-family: inherit; transition: background 0.1s, color 0.1s; }
+  .initiative:hover .remove-init-btn { display: flex; }
+  .remove-init-btn:hover { background: #fee2e2; color: #dc2626; }
+
+  .status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 7px; border-radius: 99px; font-size: 10px; font-weight: 600; white-space: nowrap; cursor: pointer; user-select: none; transition: opacity 0.12s; }
+  .status-badge:hover { opacity: 0.75; }
+  .status-badge .dot { width: 5px; height: 5px; border-radius: 50%; }
+  .status-initiated { background: #e8f5e9; color: #2e7d32; } .status-initiated .dot { background: #43a047; }
+  .status-planned   { background: #e3f2fd; color: #1565c0; } .status-planned .dot   { background: #1e88e5; }
+  .status-done      { background: #f3e5f5; color: #6a1b9a; } .status-done .dot      { background: #8e24aa; }
+
+  .outcome-box { background: #fffbeb; border-left: 3px solid #f59e0b; border-radius: 0 5px 5px 0; padding: 7px 9px; margin-bottom: 9px; }
+  .outcome-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: #a16207; margin-bottom: 4px; display: block; }
+  .outcome-text  { font-size: 11px; color: #1a1917; line-height: 1.5; font-weight: 500; display: block; min-height: 16px; }
+  .outcome-text:hover { background: rgba(245,158,11,0.07); border-radius: 3px; }
+  .outcome-text:focus { background: #fff; box-shadow: 0 0 0 2px rgba(245,158,11,0.22); border-radius: 3px; }
+
+  .initiative-desc { font-size: 11px; color: #5a5753; line-height: 1.5; margin-bottom: 7px; display: block; min-height: 16px; }
+
+  .initiative-heading {
+    font-size: 10.5px; font-weight: 700; color: #2a2825;
+    display: block; margin-bottom: 4px; margin-top: 2px;
+    padding: 1px 2px; border-radius: 3px;
+  }
+  /* Override global placeholder so it doesn't look like a heading */
+  .initiative-heading[data-ph]:empty::before {
+    font-weight: 400; color: #c8c5be; font-size: 10.5px;
+  }
+
+  .subpoints { list-style: none; padding: 0; margin-bottom: 4px; display: flex; flex-direction: column; gap: 3px; }
+  .sub-item { display: flex; align-items: flex-start; gap: 3px; padding-left: 9px; position: relative; }
+  .sub-item::before { content: "·"; position: absolute; left: 2px; top: 1px; color: #9b9690; font-size: 11px; }
+  .sub-text { font-size: 10.5px; color: #6b6861; line-height: 1.4; flex: 1; min-height: 14px; }
+  .remove-sub-btn { flex-shrink: 0; width: 13px; height: 13px; border-radius: 3px; background: transparent; border: none; color: #c8c5be; font-size: 11px; cursor: pointer; line-height: 1; display: none; align-items: center; justify-content: center; padding: 0; margin-top: 1px; font-family: inherit; transition: background 0.1s, color 0.1s; }
+  .sub-item:hover .remove-sub-btn { display: flex; }
+  .remove-sub-btn:hover { background: #fee2e2; color: #dc2626; }
+  .add-sub-btn { background: none; border: none; cursor: pointer; font-size: 10px; color: #b8b5b0; font-family: inherit; padding: 2px 4px; margin: 2px 0 6px 10px; border-radius: 3px; display: inline-flex; align-items: center; gap: 2px; transition: color 0.12s, background 0.12s; }
+  .add-sub-btn:hover { color: #4a4845; background: #eeecea; }
+
+  .meta-fields { display: flex; flex-direction: column; gap: 1px; margin-top: auto; padding-top: 10px; border-top: 1px solid #eae8e3; }
+  .meta-row { display: flex; align-items: center; gap: 6px; min-height: 24px; }
+  .meta-icon { font-size: 11px; flex-shrink: 0; width: 16px; text-align: center; color: #9b9690; }
+  /* Both assignee and link share the same left edge — no negative margins */
+  .assignee-field { font-size: 11px; color: #1a1917; flex: 1; min-width: 0; padding: 2px 0; min-height: 18px; line-height: 1.4; }
+  .assignee-field:empty::before { content: attr(data-ph); color: #c0bdb8; pointer-events: none; }
+  .link-field {
+    font-size: 11px; color: #b8b5b0; flex: 1; min-width: 0;
+    cursor: pointer; padding: 2px 0;
+    border-radius: 0; border: none; border-bottom: 1px dashed transparent;
+    background: transparent;
+    transition: border-color 0.12s, color 0.12s;
+    line-height: 1.4;
+  }
+  .link-field:hover { border-bottom-color: #d1cfc9; color: #6b6861; background: transparent; }
+  .link-field.has-value { color: #1a1917; border-bottom-color: transparent; }
+  .link-field a { color: #1e88e5; text-decoration: none; }
+  .link-field a:hover { text-decoration: underline; }
+  .inline-input { font-size: 11px; font-family: inherit; padding: 2px 5px; border: 1px solid #a8b4c8; border-radius: 4px; background: #fff; color: #1a1917; width: 100%; outline: none; box-shadow: 0 0 0 2px rgba(30,136,229,0.15); }
+
+  .static-links { margin-bottom: 6px; display: flex; gap: 5px; flex-wrap: wrap; }
+  .static-link-chip { display: inline-flex; align-items: center; gap: 3px; padding: 2px 7px; background: #f0eeea; border: 1px solid #e5e3de; border-radius: 5px; font-size: 10.5px; color: #5a5753; text-decoration: none; transition: background 0.12s; }
+  .static-link-chip:hover { background: #e8e5df; color: #1a1917; }
+
+  /* ── Dependencies — fully editable ── */
+  .deps-section { border-top: 1px solid #eae8e3; margin-top: 10px; padding-top: 8px; display: flex; flex-direction: column; gap: 5px; }
+
+  .dep-row { display: flex; align-items: flex-start; gap: 6px; }
+  .dep-label {
+    font-size: 8.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    color: #b0ada8; white-space: nowrap; padding-top: 4px;
+    min-width: 82px; flex-shrink: 0;
+  }
+  .dep-chips-wrap { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+
+  /* Editable dep chip */
+  .dep-chip-wrap {
+    display: inline-flex; align-items: center; gap: 2px;
+    padding: 2px 4px 2px 6px;
+    border: 1px solid #e0ddd8; border-radius: 5px;
+    background: #f0eeeb;
+    transition: border-color 0.12s, background 0.12s;
+  }
+  .dep-chip-wrap:hover { border-color: #c8c5be; background: #eae8e3; }
+  .dep-chip-wrap:focus-within { border-color: #93c5fd; background: #fff; box-shadow: 0 0 0 2px rgba(147,197,253,0.25); }
+
+  .dep-arrow { font-size: 9px; color: #a8a5a0; flex-shrink: 0; }
+
+  .dep-chip-text {
+    font-size: 9.5px; font-weight: 500; color: #5a5753;
+    min-width: 20px; max-width: 160px;
+    line-height: 1.4;
+  }
+  .dep-chip-text:hover { background: transparent; }
+  .dep-chip-text:focus { background: transparent; box-shadow: none; color: #1a1917; outline: none; }
+  .dep-chip-text[data-ph]:empty::before { font-size: 9.5px; color: #c0bdb8; font-style: normal; }
+
+  .remove-dep-btn {
+    flex-shrink: 0; display: none;
+    width: 13px; height: 13px; border-radius: 3px; border: none;
+    background: transparent; color: #c8c5be;
+    cursor: pointer; font-size: 11px; line-height: 1;
+    align-items: center; justify-content: center;
+    padding: 0; font-family: inherit;
+    transition: background 0.1s, color 0.1s;
+  }
+  .dep-chip-wrap:hover .remove-dep-btn { display: flex; }
+  .remove-dep-btn:hover { background: #fee2e2; color: #dc2626; }
+
+  /* Add dep chip button */
+  .add-dep-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 20px; height: 20px; border-radius: 4px;
+    border: 1.5px dashed #d1cfc9; background: transparent;
+    color: #b0ada8; font-size: 13px; cursor: pointer;
+    font-family: inherit; line-height: 1;
+    transition: border-color 0.12s, background 0.12s, color 0.12s;
+    flex-shrink: 0;
+  }
+  .add-dep-btn:hover { border-color: #a8a5a0; background: #f5f4f2; color: #4a4845; }
+
+  /* ── Add initiative ── */
+  .add-init-btn { width: 40px; flex-shrink: 0; align-self: stretch; min-height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: transparent; border: 1.5px dashed #d1cfc9; border-radius: 8px; color: #b0ada8; font-size: 20px; font-family: inherit; cursor: pointer; transition: all 0.15s; }
+  .add-init-btn:hover { background: #f5f4f2; border-color: #a8a5a0; color: #4a4845; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1 contenteditable="true" data-ce="header.title" data-ph="Roadmap title" data-sl="1">Payments &amp; Integrations Roadmap</h1>
+    <span class="header-sub" contenteditable="true" data-ce="header.sub" data-ph="Subtitle">Q3–Q4 2026 &nbsp;·&nbsp; Internal &nbsp;·&nbsp; Payments, Tech Delivery &amp; Integration</span>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#43a047"></div>Initiated</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1e88e5"></div>Planned</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#8e24aa"></div>Done</div>
+    <div class="legend-item edit-hint">✏ Click text to edit &nbsp;·&nbsp; Click status to cycle &nbsp;·&nbsp; Drag ⠿ to reorder</div>
+  </div>
+</header>
+
+<div class="roadmap" id="roadmap">
+  <div class="pillar-row" data-pillar-id="bank">
+    <div class="pillar-label" style="border-left:3px solid #d97706">
+      <div class="pillar-icon" style="background:#fffbeb">🏦</div>
+      <span class="pillar-title" contenteditable="true" data-ce="pillar.title" data-pi="bank" data-ph="Pillar title" data-sl="1">Faster &amp; Better Bank Integrations</span>
+      <span class="pillar-subtitle" contenteditable="true" data-ce="pillar.subtitle" data-pi="bank" data-ph="Pillar subtitle">Cut 8–12 week timelines. Reduce AMC dependency &amp; file format blind spots.</span>
+    </div>
+    <div class="initiatives-row" data-pillar-id="bank">
+      
+  <div class="initiative" data-init-id="amc-dive" data-pillar-id="bank">
+    <div class="initiative-top">
+      <span class="drag-handle" draggable="true" title="Drag to reorder"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><circle cx="2" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="11" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="11" r="1.4" fill="#c8c5be"></circle></svg></span>
+      <span class="initiative-title" contenteditable="true" data-ce="title" data-pi="bank" data-ii="amc-dive" data-ph="Initiative title" data-sl="1">Deep-dive on AMC mechanics</span>
+      <div class="top-right">
+        <span class="status-badge status-initiated" data-pi="bank" data-ii="amc-dive">
+          <span class="dot"></span><span class="status-text">Initiated</span>
+        </span>
+        <button class="remove-init-btn" data-ii="amc-dive" data-pi="bank" title="Remove">×</button>
+      </div>
+    </div>
+
+    <div class="outcome-box">
+      <span class="outcome-label">🎯 Outcome</span>
+      <span class="outcome-text" contenteditable="true" data-ce="outcome" data-pi="bank" data-ii="amc-dive" data-ph="What does success look like?">Team independently diagnoses and resolves AMC issues without consultant support. Integration failures from AMC unknowns reduced measurably.</span>
+    </div>
+
+    <span class="initiative-desc" contenteditable="true" data-ce="desc" data-pi="bank" data-ii="amc-dive" data-ph="Describe the initiative">Closing knowledge gaps on AMC to reduce bugs, unknown failure modes, and consultant dependency across all three major connection types.</span>
+
+    <span class="initiative-heading" contenteditable="true" data-ce="heading" data-pi="bank" data-ii="amc-dive" data-ph="Add section heading..." data-sl="1">Initiated</span>
+
+    <ul class="subpoints">
+    <li class="sub-item">
+      <span class="sub-text" contenteditable="true" data-ce="sub" data-pi="bank" data-ii="amc-dive" data-si="0" data-ph="Subpoint" data-sl="1">Bi-weekly sessions with AMC consultants — direct line + service desk</span>
+      <button class="remove-sub-btn" data-pi="bank" data-ii="amc-dive" data-si="0">×</button>
+    </li>
+    <li class="sub-item">
+      <span class="sub-text" contenteditable="true" data-ce="sub" data-pi="bank" data-ii="amc-dive" data-si="1" data-ph="Subpoint" data-sl="1">Dedicated sessions on SFTP, EBICS &amp; Bank Connect agreements</span>
+      <button class="remove-sub-btn" data-pi="bank" data-ii="amc-dive" data-si="1">×</button>
+    </li></ul>
+    <button class="add-sub-btn" data-pi="bank" data-ii="amc-dive">+ Add point</button>
+
+    <div class="meta-fields">
+      <div class="meta-row">
+        <span class="meta-icon">👤</span>
+        <span class="assignee-field" contenteditable="true" data-ce="assignee" data-pi="bank" data-ii="amc-dive" data-ph="Assign owner" data-sl="1"></span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-icon">🔗</span>
+        <span class="link-field" data-pi="bank" data-ii="amc-dive">Add Linear link</span>
+      </div>
+    </div>
+
+    
+
+    <div class="deps-section">
+      <div class="dep-row">
+        <span class="dep-label">Carries over from</span>
+        <div class="dep-chips-wrap"><button class="add-dep-btn" data-field="buildsOn" data-pi="bank" data-ii="amc-dive" title="Add connection">+</button></div>
+      </div>
+      <div class="dep-row">
+        <span class="dep-label">Feeds into</span>
+        <div class="dep-chips-wrap">
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">→</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="feedsInto" data-pi="bank" data-ii="amc-dive" data-di="0" data-ph="Connection" data-sl="1">Direct API integrations — top 5 banks</span>
+      <button class="remove-dep-btn" data-field="feedsInto" data-pi="bank" data-ii="amc-dive" data-di="0" title="Remove">×</button>
+    </span>
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">→</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="feedsInto" data-pi="bank" data-ii="amc-dive" data-di="1" data-ph="Connection" data-sl="1">XML file structure testing tool</span>
+      <button class="remove-dep-btn" data-field="feedsInto" data-pi="bank" data-ii="amc-dive" data-di="1" title="Remove">×</button>
+    </span>
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">→</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="feedsInto" data-pi="bank" data-ii="amc-dive" data-di="2" data-ph="Connection" data-sl="1">Payment self-service endpoint</span>
+      <button class="remove-dep-btn" data-field="feedsInto" data-pi="bank" data-ii="amc-dive" data-di="2" title="Remove">×</button>
+    </span><button class="add-dep-btn" data-field="feedsInto" data-pi="bank" data-ii="amc-dive" title="Add connection">+</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="initiative" data-init-id="xml-tool" data-pillar-id="bank">
+    <div class="initiative-top">
+      <span class="drag-handle" draggable="true" title="Drag to reorder"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><circle cx="2" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="11" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="11" r="1.4" fill="#c8c5be"></circle></svg></span>
+      <span class="initiative-title" contenteditable="true" data-ce="title" data-pi="bank" data-ii="xml-tool" data-ph="Initiative title" data-sl="1">XML file structure testing tool</span>
+      <div class="top-right">
+        <span class="status-badge status-planned" data-pi="bank" data-ii="xml-tool">
+          <span class="dot"></span><span class="status-text">Planned</span>
+        </span>
+        <button class="remove-init-btn" data-ii="xml-tool" data-pi="bank" title="Remove">×</button>
+      </div>
+    </div>
+
+    <div class="outcome-box">
+      <span class="outcome-label">🎯 Outcome</span>
+      <span class="outcome-text" contenteditable="true" data-ce="outcome" data-pi="bank" data-ii="xml-tool" data-ph="What does success look like?">Payment file structures validated in minutes, not days. Format errors eliminated as a primary source of integration delays.</span>
+    </div>
+
+    <span class="initiative-desc" contenteditable="true" data-ce="desc" data-pi="bank" data-ii="xml-tool" data-ph="Describe the initiative">Validate payment file structures across banks, countries, and regulatory codes — without needing a live integration.<br></span>
+
+    <span class="initiative-heading" contenteditable="true" data-ce="heading" data-pi="bank" data-ii="xml-tool" data-ph="Add section heading..." data-sl="1">Starting with:</span>
+
+    <ul class="subpoints">
+    <li class="sub-item">
+      <span class="sub-text" contenteditable="true" data-ce="sub" data-pi="bank" data-ii="xml-tool" data-si="0" data-ph="Subpoint" data-sl="1">JPM (US/UK/Canada)</span>
+      <button class="remove-sub-btn" data-pi="bank" data-ii="xml-tool" data-si="0">×</button>
+    </li>
+    <li class="sub-item">
+      <span class="sub-text" contenteditable="true" data-ce="sub" data-pi="bank" data-ii="xml-tool" data-si="1" data-ph="Subpoint" data-sl="1">HSBC (US/UK/Singapore)</span>
+      <button class="remove-sub-btn" data-pi="bank" data-ii="xml-tool" data-si="1">×</button>
+    </li></ul>
+    <button class="add-sub-btn" data-pi="bank" data-ii="xml-tool">+ Add point</button>
+
+    <div class="meta-fields">
+      <div class="meta-row">
+        <span class="meta-icon">👤</span>
+        <span class="assignee-field" contenteditable="true" data-ce="assignee" data-pi="bank" data-ii="xml-tool" data-ph="Assign owner" data-sl="1"></span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-icon">🔗</span>
+        <span class="link-field" data-pi="bank" data-ii="xml-tool">Add Linear link</span>
+      </div>
+    </div>
+
+    <div class="static-links"><a class="static-link-chip" href="https://claude.ai/public/artifacts/aacd4f19-86f2-49ec-b317-33c6934909d1" target="_blank"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M8 1h3m0 0v3m0-3L5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> Prototype</a></div>
+
+    <div class="deps-section">
+      <div class="dep-row">
+        <span class="dep-label">Carries over from</span>
+        <div class="dep-chips-wrap">
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">←</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="buildsOn" data-pi="bank" data-ii="xml-tool" data-di="0" data-ph="Connection" data-sl="1">Deep-dive on AMC mechanics</span>
+      <button class="remove-dep-btn" data-field="buildsOn" data-pi="bank" data-ii="xml-tool" data-di="0" title="Remove">×</button>
+    </span><button class="add-dep-btn" data-field="buildsOn" data-pi="bank" data-ii="xml-tool" title="Add connection">+</button></div>
+      </div>
+      <div class="dep-row">
+        <span class="dep-label">Feeds into</span>
+        <div class="dep-chips-wrap">
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">→</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="feedsInto" data-pi="bank" data-ii="xml-tool" data-di="0" data-ph="Connection" data-sl="1">Direct API integrations — top 5 banks</span>
+      <button class="remove-dep-btn" data-field="feedsInto" data-pi="bank" data-ii="xml-tool" data-di="0" title="Remove">×</button>
+    </span>
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">→</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="feedsInto" data-pi="bank" data-ii="xml-tool" data-di="1" data-ph="Connection" data-sl="1"></span>
+      <button class="remove-dep-btn" data-field="feedsInto" data-pi="bank" data-ii="xml-tool" data-di="1" title="Remove">×</button>
+    </span><button class="add-dep-btn" data-field="feedsInto" data-pi="bank" data-ii="xml-tool" title="Add connection">+</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="initiative" data-init-id="direct-api" data-pillar-id="bank">
+    <div class="initiative-top">
+      <span class="drag-handle" draggable="true" title="Drag to reorder"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><circle cx="2" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="11" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="11" r="1.4" fill="#c8c5be"></circle></svg></span>
+      <span class="initiative-title" contenteditable="true" data-ce="title" data-pi="bank" data-ii="direct-api" data-ph="Initiative title" data-sl="1">Direct API integrations — top 5 banks</span>
+      <div class="top-right">
+        <span class="status-badge status-planned" data-pi="bank" data-ii="direct-api">
+          <span class="dot"></span><span class="status-text">Planned</span>
+        </span>
+        <button class="remove-init-btn" data-ii="direct-api" data-pi="bank" title="Remove">×</button>
+      </div>
+    </div>
+
+    <div class="outcome-box">
+      <span class="outcome-label">🎯 Outcome</span>
+      <span class="outcome-text" contenteditable="true" data-ce="outcome" data-pi="bank" data-ii="direct-api" data-ph="What does success look like?">Integration timeline cut from 8–12 weeks to under 3 weeks for top-5 banks. AMC removed as single point of failure for high-volume integrations.</span>
+    </div>
+
+    <span class="initiative-desc" contenteditable="true" data-ce="desc" data-pi="bank" data-ii="direct-api" data-ph="Describe the initiative">Direct integrations outside of AMC for the 5 banks making up the bulk of our volume — modelled on the Danske Bank approach.</span>
+
+    <span class="initiative-heading" contenteditable="true" data-ce="heading" data-pi="bank" data-ii="direct-api" data-ph="Add section heading..." data-sl="1"></span>
+
+    <ul class="subpoints">
+    <li class="sub-item">
+      <span class="sub-text" contenteditable="true" data-ce="sub" data-pi="bank" data-ii="direct-api" data-si="0" data-ph="Subpoint" data-sl="1">Starting with JPM</span>
+      <button class="remove-sub-btn" data-pi="bank" data-ii="direct-api" data-si="0">×</button>
+    </li>
+    <li class="sub-item">
+      <span class="sub-text" contenteditable="true" data-ce="sub" data-pi="bank" data-ii="direct-api" data-si="1" data-ph="Subpoint" data-sl="1"></span>
+      <button class="remove-sub-btn" data-pi="bank" data-ii="direct-api" data-si="1">×</button>
+    </li>
+    <li class="sub-item">
+      <span class="sub-text" contenteditable="true" data-ce="sub" data-pi="bank" data-ii="direct-api" data-si="2" data-ph="Subpoint" data-sl="1"></span>
+      <button class="remove-sub-btn" data-pi="bank" data-ii="direct-api" data-si="2">×</button>
+    </li>
+    <li class="sub-item">
+      <span class="sub-text" contenteditable="true" data-ce="sub" data-pi="bank" data-ii="direct-api" data-si="3" data-ph="Subpoint" data-sl="1"></span>
+      <button class="remove-sub-btn" data-pi="bank" data-ii="direct-api" data-si="3">×</button>
+    </li></ul>
+    <button class="add-sub-btn" data-pi="bank" data-ii="direct-api">+ Add point</button>
+
+    <div class="meta-fields">
+      <div class="meta-row">
+        <span class="meta-icon">👤</span>
+        <span class="assignee-field" contenteditable="true" data-ce="assignee" data-pi="bank" data-ii="direct-api" data-ph="Assign owner" data-sl="1"></span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-icon">🔗</span>
+        <span class="link-field" data-pi="bank" data-ii="direct-api">Add Linear link</span>
+      </div>
+    </div>
+
+    
+
+    <div class="deps-section">
+      <div class="dep-row">
+        <span class="dep-label">Carries over from</span>
+        <div class="dep-chips-wrap">
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">←</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="buildsOn" data-pi="bank" data-ii="direct-api" data-di="0" data-ph="Connection" data-sl="1">Deep-dive on AMC mechanics</span>
+      <button class="remove-dep-btn" data-field="buildsOn" data-pi="bank" data-ii="direct-api" data-di="0" title="Remove">×</button>
+    </span>
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">←</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="buildsOn" data-pi="bank" data-ii="direct-api" data-di="1" data-ph="Connection" data-sl="1">XML file structure testing tool</span>
+      <button class="remove-dep-btn" data-field="buildsOn" data-pi="bank" data-ii="direct-api" data-di="1" title="Remove">×</button>
+    </span><button class="add-dep-btn" data-field="buildsOn" data-pi="bank" data-ii="direct-api" title="Add connection">+</button></div>
+      </div>
+      <div class="dep-row">
+        <span class="dep-label">Feeds into</span>
+        <div class="dep-chips-wrap"><button class="add-dep-btn" data-field="feedsInto" data-pi="bank" data-ii="direct-api" title="Add connection">+</button></div>
+      </div>
+    </div>
+  </div>
+      <button class="add-init-btn" data-pi="bank" title="Add initiative">+</button>
+    </div>
+  </div>
+  <div class="pillar-row" data-pillar-id="payment-flow">
+    <div class="pillar-label" style="border-left:3px solid #16a34a">
+      <div class="pillar-icon" style="background:#f0fdf4">⚡</div>
+      <span class="pillar-title" contenteditable="true" data-ce="pillar.title" data-pi="payment-flow" data-ph="Pillar title" data-sl="1">Smoother Payment Flow</span>
+      <span class="pillar-subtitle" contenteditable="true" data-ce="pillar.subtitle" data-pi="payment-flow" data-ph="Pillar subtitle">Reduce ops overhead from failing &amp; stuck payments. Faster resolution for customers.</span>
+    </div>
+    <div class="initiatives-row" data-pillar-id="payment-flow">
+      
+  <div class="initiative" data-init-id="self-service" data-pillar-id="payment-flow">
+    <div class="initiative-top">
+      <span class="drag-handle" draggable="true" title="Drag to reorder"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><circle cx="2" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="11" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="11" r="1.4" fill="#c8c5be"></circle></svg></span>
+      <span class="initiative-title" contenteditable="true" data-ce="title" data-pi="payment-flow" data-ii="self-service" data-ph="Initiative title" data-sl="1">Payment self-service endpoint</span>
+      <div class="top-right">
+        <span class="status-badge status-initiated" data-pi="payment-flow" data-ii="self-service">
+          <span class="dot"></span><span class="status-text">Initiated</span>
+        </span>
+        <button class="remove-init-btn" data-ii="self-service" data-pi="payment-flow" title="Remove">×</button>
+      </div>
+    </div>
+
+    <div class="outcome-box">
+      <span class="outcome-label">🎯 Outcome</span>
+      <span class="outcome-text" contenteditable="true" data-ce="outcome" data-pi="payment-flow" data-ii="self-service" data-ph="What does success look like?">Payments team resolves stuck/failed payments in under 1 hour without engineering involvement. Measurable reduction in CS escalations.</span>
+    </div>
+
+    <span class="initiative-desc" contenteditable="true" data-ce="desc" data-pi="payment-flow" data-ii="self-service" data-ph="Describe the initiative">Lets the payments team retrigger, mark as paid, or clear stuck payments — without going through engineering.</span>
+
+    <span class="initiative-heading" contenteditable="true" data-ce="heading" data-pi="payment-flow" data-ii="self-service" data-ph="Add section heading..." data-sl="1"></span>
+
+    <ul class="subpoints"></ul>
+    <button class="add-sub-btn" data-pi="payment-flow" data-ii="self-service">+ Add point</button>
+
+    <div class="meta-fields">
+      <div class="meta-row">
+        <span class="meta-icon">👤</span>
+        <span class="assignee-field" contenteditable="true" data-ce="assignee" data-pi="payment-flow" data-ii="self-service" data-ph="Assign owner" data-sl="1"></span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-icon">🔗</span>
+        <span class="link-field has-value" data-pi="payment-flow" data-ii="self-service"><a href="https://linear.app/lightinc/issue/PRO2-1/limiting-retriggering-of-client-payments" target="_blank" onclick="event.stopPropagation()"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M8 1h3m0 0v3m0-3L5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> Linear ↗</a></span>
+      </div>
+    </div>
+
+    
+
+    <div class="deps-section">
+      <div class="dep-row">
+        <span class="dep-label">Carries over from</span>
+        <div class="dep-chips-wrap">
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">←</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="buildsOn" data-pi="payment-flow" data-ii="self-service" data-di="0" data-ph="Connection" data-sl="1">Deep-dive on AMC mechanics</span>
+      <button class="remove-dep-btn" data-field="buildsOn" data-pi="payment-flow" data-ii="self-service" data-di="0" title="Remove">×</button>
+    </span><button class="add-dep-btn" data-field="buildsOn" data-pi="payment-flow" data-ii="self-service" title="Add connection">+</button></div>
+      </div>
+      <div class="dep-row">
+        <span class="dep-label">Feeds into</span>
+        <div class="dep-chips-wrap">
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">→</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="feedsInto" data-pi="payment-flow" data-ii="self-service" data-di="0" data-ph="Connection" data-sl="1">Error white-/blacklisting &amp; auto-retrigger</span>
+      <button class="remove-dep-btn" data-field="feedsInto" data-pi="payment-flow" data-ii="self-service" data-di="0" title="Remove">×</button>
+    </span>
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">→</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="feedsInto" data-pi="payment-flow" data-ii="self-service" data-di="1" data-ph="Connection" data-sl="1">Unified customer status dashboard</span>
+      <button class="remove-dep-btn" data-field="feedsInto" data-pi="payment-flow" data-ii="self-service" data-di="1" title="Remove">×</button>
+    </span><button class="add-dep-btn" data-field="feedsInto" data-pi="payment-flow" data-ii="self-service" title="Add connection">+</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="initiative" data-init-id="llm-errors" data-pillar-id="payment-flow">
+    <div class="initiative-top">
+      <span class="drag-handle" draggable="true" title="Drag to reorder"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><circle cx="2" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="11" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="11" r="1.4" fill="#c8c5be"></circle></svg></span>
+      <span class="initiative-title" contenteditable="true" data-ce="title" data-pi="payment-flow" data-ii="llm-errors" data-ph="Initiative title" data-sl="1">Improved LLM error translation</span>
+      <div class="top-right">
+        <span class="status-badge status-initiated" data-pi="payment-flow" data-ii="llm-errors">
+          <span class="dot"></span><span class="status-text">Initiated</span>
+        </span>
+        <button class="remove-init-btn" data-ii="llm-errors" data-pi="payment-flow" title="Remove">×</button>
+      </div>
+    </div>
+
+    <div class="outcome-box">
+      <span class="outcome-label">🎯 Outcome</span>
+      <span class="outcome-text" contenteditable="true" data-ce="outcome" data-pi="payment-flow" data-ii="llm-errors" data-ph="What does success look like?">Customers receive clear, actionable error messages. Reduction in support contacts per failed payment.</span>
+    </div>
+
+    <span class="initiative-desc" contenteditable="true" data-ce="desc" data-pi="payment-flow" data-ii="llm-errors" data-ph="Describe the initiative">Replace cryptic bank error codes with clear, customer-friendly messages that include actionable next steps.</span>
+
+    <span class="initiative-heading" contenteditable="true" data-ce="heading" data-pi="payment-flow" data-ii="llm-errors" data-ph="Add section heading..." data-sl="1"></span>
+
+    <ul class="subpoints"></ul>
+    <button class="add-sub-btn" data-pi="payment-flow" data-ii="llm-errors">+ Add point</button>
+
+    <div class="meta-fields">
+      <div class="meta-row">
+        <span class="meta-icon">👤</span>
+        <span class="assignee-field" contenteditable="true" data-ce="assignee" data-pi="payment-flow" data-ii="llm-errors" data-ph="Assign owner" data-sl="1"></span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-icon">🔗</span>
+        <span class="link-field has-value" data-pi="payment-flow" data-ii="llm-errors" style=""><a href="https://linear.app/lightinc/issue/PRO2-1/limiting-retriggering-of-client-payments" target="_blank" onclick="event.stopPropagation()"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M8 1h3m0 0v3m0-3L5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> Linear ↗</a></span>
+      </div>
+    </div>
+
+    
+
+    <div class="deps-section">
+      <div class="dep-row">
+        <span class="dep-label">Carries over from</span>
+        <div class="dep-chips-wrap"><button class="add-dep-btn" data-field="buildsOn" data-pi="payment-flow" data-ii="llm-errors" title="Add connection">+</button></div>
+      </div>
+      <div class="dep-row">
+        <span class="dep-label">Feeds into</span>
+        <div class="dep-chips-wrap">
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">→</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="feedsInto" data-pi="payment-flow" data-ii="llm-errors" data-di="0" data-ph="Connection" data-sl="1">Error white-/blacklisting &amp; auto-retrigger</span>
+      <button class="remove-dep-btn" data-field="feedsInto" data-pi="payment-flow" data-ii="llm-errors" data-di="0" title="Remove">×</button>
+    </span><button class="add-dep-btn" data-field="feedsInto" data-pi="payment-flow" data-ii="llm-errors" title="Add connection">+</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="initiative" data-init-id="vop" data-pillar-id="payment-flow">
+    <div class="initiative-top">
+      <span class="drag-handle" draggable="true" title="Drag to reorder"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><circle cx="2" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="11" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="11" r="1.4" fill="#c8c5be"></circle></svg></span>
+      <span class="initiative-title" contenteditable="true" data-ce="title" data-pi="payment-flow" data-ii="vop" data-ph="Initiative title" data-sl="1">Verification of Payee (VoP)</span>
+      <div class="top-right">
+        <span class="status-badge status-initiated" data-pi="payment-flow" data-ii="vop">
+          <span class="dot"></span><span class="status-text">Initiated</span>
+        </span>
+        <button class="remove-init-btn" data-ii="vop" data-pi="payment-flow" title="Remove">×</button>
+      </div>
+    </div>
+
+    <div class="outcome-box">
+      <span class="outcome-label">🎯 Outcome</span>
+      <span class="outcome-text" contenteditable="true" data-ce="outcome" data-pi="payment-flow" data-ii="vop" data-ph="What does success look like?">Payment failure rate reduced through pre-submission validation. Compliance with emerging VoP regulatory requirements.</span>
+    </div>
+
+    <span class="initiative-desc" contenteditable="true" data-ce="desc" data-pi="payment-flow" data-ii="vop" data-ph="Describe the initiative">Implement VoP and internal validation standards to catch issues before payments are submitted.</span>
+
+    <span class="initiative-heading" contenteditable="true" data-ce="heading" data-pi="payment-flow" data-ii="vop" data-ph="Add section heading..." data-sl="1"></span>
+
+    <ul class="subpoints"></ul>
+    <button class="add-sub-btn" data-pi="payment-flow" data-ii="vop">+ Add point</button>
+
+    <div class="meta-fields">
+      <div class="meta-row">
+        <span class="meta-icon">👤</span>
+        <span class="assignee-field" contenteditable="true" data-ce="assignee" data-pi="payment-flow" data-ii="vop" data-ph="Assign owner" data-sl="1"></span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-icon">🔗</span>
+        <span class="link-field has-value" data-pi="payment-flow" data-ii="vop" style=""><a href="https://linear.app/lightinc/issue/PRO2-1/limiting-retriggering-of-client-payments" target="_blank" onclick="event.stopPropagation()"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M8 1h3m0 0v3m0-3L5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> Linear ↗</a></span>
+      </div>
+    </div>
+
+    
+
+    <div class="deps-section">
+      <div class="dep-row">
+        <span class="dep-label">Carries over from</span>
+        <div class="dep-chips-wrap"><button class="add-dep-btn" data-field="buildsOn" data-pi="payment-flow" data-ii="vop" title="Add connection">+</button></div>
+      </div>
+      <div class="dep-row">
+        <span class="dep-label">Feeds into</span>
+        <div class="dep-chips-wrap">
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">→</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="feedsInto" data-pi="payment-flow" data-ii="vop" data-di="0" data-ph="Connection" data-sl="1">Error white-/blacklisting &amp; auto-retrigger</span>
+      <button class="remove-dep-btn" data-field="feedsInto" data-pi="payment-flow" data-ii="vop" data-di="0" title="Remove">×</button>
+    </span><button class="add-dep-btn" data-field="feedsInto" data-pi="payment-flow" data-ii="vop" title="Add connection">+</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="initiative" data-init-id="auto-retrigger" data-pillar-id="payment-flow">
+    <div class="initiative-top">
+      <span class="drag-handle" draggable="true" title="Drag to reorder"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><circle cx="2" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="11" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="11" r="1.4" fill="#c8c5be"></circle></svg></span>
+      <span class="initiative-title" contenteditable="true" data-ce="title" data-pi="payment-flow" data-ii="auto-retrigger" data-ph="Initiative title" data-sl="1">Error white-/blacklisting &amp; auto-retrigger</span>
+      <div class="top-right">
+        <span class="status-badge status-initiated" data-pi="payment-flow" data-ii="auto-retrigger">
+          <span class="dot"></span><span class="status-text">Initiated</span>
+        </span>
+        <button class="remove-init-btn" data-ii="auto-retrigger" data-pi="payment-flow" title="Remove">×</button>
+      </div>
+    </div>
+
+    <div class="outcome-box">
+      <span class="outcome-label">🎯 Outcome</span>
+      <span class="outcome-text" contenteditable="true" data-ce="outcome" data-pi="payment-flow" data-ii="auto-retrigger" data-ph="What does success look like?">Known-safe payment failures auto-retrigger without human intervention. Significant reduction in manually handled failures per week.</span>
+    </div>
+
+    <span class="initiative-desc" contenteditable="true" data-ce="desc" data-pi="payment-flow" data-ii="auto-retrigger" data-ph="Describe the initiative">Auto-retrigger payments that fail for known, safe reasons. 4-eyes accounting principle enforced.</span>
+
+    <span class="initiative-heading" contenteditable="true" data-ce="heading" data-pi="payment-flow" data-ii="auto-retrigger" data-ph="Add section heading..." data-sl="1"></span>
+
+    <ul class="subpoints"></ul>
+    <button class="add-sub-btn" data-pi="payment-flow" data-ii="auto-retrigger">+ Add point</button>
+
+    <div class="meta-fields">
+      <div class="meta-row">
+        <span class="meta-icon">👤</span>
+        <span class="assignee-field" contenteditable="true" data-ce="assignee" data-pi="payment-flow" data-ii="auto-retrigger" data-ph="Assign owner" data-sl="1"></span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-icon">🔗</span>
+        <span class="link-field has-value" data-pi="payment-flow" data-ii="auto-retrigger" style=""><a href="https://linear.app/lightinc/issue/PRO2-1/limiting-retriggering-of-client-payments" target="_blank" onclick="event.stopPropagation()"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M8 1h3m0 0v3m0-3L5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> Linear ↗</a></span>
+      </div>
+    </div>
+
+    
+
+    <div class="deps-section">
+      <div class="dep-row">
+        <span class="dep-label">Carries over from</span>
+        <div class="dep-chips-wrap">
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">←</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="buildsOn" data-pi="payment-flow" data-ii="auto-retrigger" data-di="0" data-ph="Connection" data-sl="1">Payment self-service endpoint</span>
+      <button class="remove-dep-btn" data-field="buildsOn" data-pi="payment-flow" data-ii="auto-retrigger" data-di="0" title="Remove">×</button>
+    </span>
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">←</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="buildsOn" data-pi="payment-flow" data-ii="auto-retrigger" data-di="1" data-ph="Connection" data-sl="1">Improved LLM error translation</span>
+      <button class="remove-dep-btn" data-field="buildsOn" data-pi="payment-flow" data-ii="auto-retrigger" data-di="1" title="Remove">×</button>
+    </span>
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">←</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="buildsOn" data-pi="payment-flow" data-ii="auto-retrigger" data-di="2" data-ph="Connection" data-sl="1">Verification of Payee (VoP)</span>
+      <button class="remove-dep-btn" data-field="buildsOn" data-pi="payment-flow" data-ii="auto-retrigger" data-di="2" title="Remove">×</button>
+    </span><button class="add-dep-btn" data-field="buildsOn" data-pi="payment-flow" data-ii="auto-retrigger" title="Add connection">+</button></div>
+      </div>
+      <div class="dep-row">
+        <span class="dep-label">Feeds into</span>
+        <div class="dep-chips-wrap"><button class="add-dep-btn" data-field="feedsInto" data-pi="payment-flow" data-ii="auto-retrigger" title="Add connection">+</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="initiative" data-init-id="custom-1779279134008" data-pillar-id="payment-flow">
+    <div class="initiative-top">
+      <span class="drag-handle" draggable="true" title="Drag to reorder"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><circle cx="2" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="11" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="11" r="1.4" fill="#c8c5be"></circle></svg></span>
+      <span class="initiative-title" contenteditable="true" data-ce="title" data-pi="payment-flow" data-ii="custom-1779279134008" data-ph="Initiative title" data-sl="1">Redo our triggering architecture so we don't overload Xtendlink</span>
+      <div class="top-right">
+        <span class="status-badge status-planned" data-pi="payment-flow" data-ii="custom-1779279134008">
+          <span class="dot"></span><span class="status-text">Planned</span>
+        </span>
+        <button class="remove-init-btn" data-ii="custom-1779279134008" data-pi="payment-flow" title="Remove">×</button>
+      </div>
+    </div>
+
+    <div class="outcome-box">
+      <span class="outcome-label">🎯 Outcome</span>
+      <span class="outcome-text" contenteditable="true" data-ce="outcome" data-pi="payment-flow" data-ii="custom-1779279134008" data-ph="What does success look like?"></span>
+    </div>
+
+    <span class="initiative-desc" contenteditable="true" data-ce="desc" data-pi="payment-flow" data-ii="custom-1779279134008" data-ph="Describe the initiative">Payment requests are unstable and returns contradictory reponses</span>
+
+    <span class="initiative-heading" contenteditable="true" data-ce="heading" data-pi="payment-flow" data-ii="custom-1779279134008" data-ph="Add section heading..." data-sl="1"></span>
+
+    <ul class="subpoints"></ul>
+    <button class="add-sub-btn" data-pi="payment-flow" data-ii="custom-1779279134008">+ Add point</button>
+
+    <div class="meta-fields">
+      <div class="meta-row">
+        <span class="meta-icon">👤</span>
+        <span class="assignee-field" contenteditable="true" data-ce="assignee" data-pi="payment-flow" data-ii="custom-1779279134008" data-ph="Assign owner" data-sl="1"></span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-icon">🔗</span>
+        <span class="link-field has-value" data-pi="payment-flow" data-ii="custom-1779279134008"><a href="https://linear.app/lightinc/issue/PRO2-21/payment-requests-are-unstable-and-returns-contradictory-repsonses" target="_blank" onclick="event.stopPropagation()"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M8 1h3m0 0v3m0-3L5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> Linear ↗</a></span>
+      </div>
+    </div>
+
+    
+
+    <div class="deps-section">
+      <div class="dep-row">
+        <span class="dep-label">Carries over from</span>
+        <div class="dep-chips-wrap"><button class="add-dep-btn" data-field="buildsOn" data-pi="payment-flow" data-ii="custom-1779279134008" title="Add connection">+</button></div>
+      </div>
+      <div class="dep-row">
+        <span class="dep-label">Feeds into</span>
+        <div class="dep-chips-wrap"><button class="add-dep-btn" data-field="feedsInto" data-pi="payment-flow" data-ii="custom-1779279134008" title="Add connection">+</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="initiative" data-init-id="custom-1779279509625" data-pillar-id="payment-flow">
+    <div class="initiative-top">
+      <span class="drag-handle" draggable="true" title="Drag to reorder"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><circle cx="2" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="11" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="11" r="1.4" fill="#c8c5be"></circle></svg></span>
+      <span class="initiative-title" contenteditable="true" data-ce="title" data-pi="payment-flow" data-ii="custom-1779279509625" data-ph="Initiative title" data-sl="1"><p class="text-node" data-pm-slice="1 1 []">Payment address format updates required by November 14, 2026</p></span>
+      <div class="top-right">
+        <span class="status-badge status-planned" data-pi="payment-flow" data-ii="custom-1779279509625">
+          <span class="dot"></span><span class="status-text">Planned</span>
+        </span>
+        <button class="remove-init-btn" data-ii="custom-1779279509625" data-pi="payment-flow" title="Remove">×</button>
+      </div>
+    </div>
+
+    <div class="outcome-box">
+      <span class="outcome-label">🎯 Outcome</span>
+      <span class="outcome-text" contenteditable="true" data-ce="outcome" data-pi="payment-flow" data-ii="custom-1779279509625" data-ph="What does success look like?"></span>
+    </div>
+
+    <span class="initiative-desc" contenteditable="true" data-ce="desc" data-pi="payment-flow" data-ii="custom-1779279509625" data-ph="Describe the initiative"></span>
+
+    <span class="initiative-heading" contenteditable="true" data-ce="heading" data-pi="payment-flow" data-ii="custom-1779279509625" data-ph="Add section heading..." data-sl="1"></span>
+
+    <ul class="subpoints"></ul>
+    <button class="add-sub-btn" data-pi="payment-flow" data-ii="custom-1779279509625">+ Add point</button>
+
+    <div class="meta-fields">
+      <div class="meta-row">
+        <span class="meta-icon">👤</span>
+        <span class="assignee-field" contenteditable="true" data-ce="assignee" data-pi="payment-flow" data-ii="custom-1779279509625" data-ph="Assign owner" data-sl="1"></span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-icon">🔗</span>
+        <span class="link-field has-value" data-pi="payment-flow" data-ii="custom-1779279509625" style=""><a href="https://linear.app/lightinc/issue/PRO2-22/payment-address-format-updates-required-by-november-14-2026" target="_blank" onclick="event.stopPropagation()"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M8 1h3m0 0v3m0-3L5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> Linear ↗</a></span>
+      </div>
+    </div>
+
+    
+
+    <div class="deps-section">
+      <div class="dep-row">
+        <span class="dep-label">Carries over from</span>
+        <div class="dep-chips-wrap"><button class="add-dep-btn" data-field="buildsOn" data-pi="payment-flow" data-ii="custom-1779279509625" title="Add connection">+</button></div>
+      </div>
+      <div class="dep-row">
+        <span class="dep-label">Feeds into</span>
+        <div class="dep-chips-wrap"><button class="add-dep-btn" data-field="feedsInto" data-pi="payment-flow" data-ii="custom-1779279509625" title="Add connection">+</button></div>
+      </div>
+    </div>
+  </div>
+      <button class="add-init-btn" data-pi="payment-flow" title="Add initiative">+</button>
+    </div>
+  </div>
+  <div class="pillar-row" data-pillar-id="tooling">
+    <div class="pillar-label" style="border-left:3px solid #2563eb">
+      <div class="pillar-icon" style="background:#eff6ff">🛠️</div>
+      <span class="pillar-title" contenteditable="true" data-ce="pillar.title" data-pi="tooling" data-ph="Pillar title" data-sl="1">Better Internal Tooling</span>
+      <span class="pillar-subtitle" contenteditable="true" data-ce="pillar.subtitle" data-pi="tooling" data-ph="Pillar subtitle">Too many tools, too much noise. Consolidate to ship faster.</span>
+    </div>
+    <div class="initiatives-row" data-pillar-id="tooling">
+      
+  <div class="initiative" data-init-id="dashboard" data-pillar-id="tooling">
+    <div class="initiative-top">
+      <span class="drag-handle" draggable="true" title="Drag to reorder"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><circle cx="2" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="11" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="11" r="1.4" fill="#c8c5be"></circle></svg></span>
+      <span class="initiative-title" contenteditable="true" data-ce="title" data-pi="tooling" data-ii="dashboard" data-ph="Initiative title" data-sl="1">Unified customer status dashboard</span>
+      <div class="top-right">
+        <span class="status-badge status-initiated" data-pi="tooling" data-ii="dashboard">
+          <span class="dot"></span><span class="status-text">Initiated</span>
+        </span>
+        <button class="remove-init-btn" data-ii="dashboard" data-pi="tooling" title="Remove">×</button>
+      </div>
+    </div>
+
+    <div class="outcome-box">
+      <span class="outcome-label">🎯 Outcome</span>
+      <span class="outcome-text" contenteditable="true" data-ce="outcome" data-pi="tooling" data-ii="dashboard" data-ph="What does success look like?">Single source of truth for every customer's integration status. Team spends 50%+ less time context-switching across tools.</span>
+    </div>
+
+    <span class="initiative-desc" contenteditable="true" data-ce="desc" data-pi="tooling" data-ii="dashboard" data-ph="Describe the initiative">Single view aggregating signals from Slack, Gmail, Linear, XtendLink, AMC &amp; GitHub — filtered per customer.</span>
+
+    <span class="initiative-heading" contenteditable="true" data-ce="heading" data-pi="tooling" data-ii="dashboard" data-ph="Add section heading..." data-sl="1"></span>
+
+    <ul class="subpoints">
+    <li class="sub-item">
+      <span class="sub-text" contenteditable="true" data-ce="sub" data-pi="tooling" data-ii="dashboard" data-si="0" data-ph="Subpoint" data-sl="1">Eliminates context-switching across 6+ tools</span>
+      <button class="remove-sub-btn" data-pi="tooling" data-ii="dashboard" data-si="0">×</button>
+    </li>
+    <li class="sub-item">
+      <span class="sub-text" contenteditable="true" data-ce="sub" data-pi="tooling" data-ii="dashboard" data-si="1" data-ph="Subpoint" data-sl="1">Surfaces blockers and outstanding items without manual chasing</span>
+      <button class="remove-sub-btn" data-pi="tooling" data-ii="dashboard" data-si="1">×</button>
+    </li></ul>
+    <button class="add-sub-btn" data-pi="tooling" data-ii="dashboard">+ Add point</button>
+
+    <div class="meta-fields">
+      <div class="meta-row">
+        <span class="meta-icon">👤</span>
+        <span class="assignee-field" contenteditable="true" data-ce="assignee" data-pi="tooling" data-ii="dashboard" data-ph="Assign owner" data-sl="1"></span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-icon">🔗</span>
+        <span class="link-field" data-pi="tooling" data-ii="dashboard">Add Linear link</span>
+      </div>
+    </div>
+
+    
+
+    <div class="deps-section">
+      <div class="dep-row">
+        <span class="dep-label">Carries over from</span>
+        <div class="dep-chips-wrap">
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">←</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="buildsOn" data-pi="tooling" data-ii="dashboard" data-di="0" data-ph="Connection" data-sl="1">Payment self-service endpoint</span>
+      <button class="remove-dep-btn" data-field="buildsOn" data-pi="tooling" data-ii="dashboard" data-di="0" title="Remove">×</button>
+    </span><button class="add-dep-btn" data-field="buildsOn" data-pi="tooling" data-ii="dashboard" title="Add connection">+</button></div>
+      </div>
+      <div class="dep-row">
+        <span class="dep-label">Feeds into</span>
+        <div class="dep-chips-wrap"><button class="add-dep-btn" data-field="feedsInto" data-pi="tooling" data-ii="dashboard" title="Add connection">+</button></div>
+      </div>
+    </div>
+  </div>
+      <button class="add-init-btn" data-pi="tooling" title="Add initiative">+</button>
+    </div>
+  </div>
+  <div class="pillar-row" data-pillar-id="independence">
+    <div class="pillar-label" style="border-left:3px solid #db2777">
+      <div class="pillar-icon" style="background:#fdf2f8">🚀</div>
+      <span class="pillar-title" contenteditable="true" data-ce="pillar.title" data-pi="independence" data-ph="Pillar title" data-sl="1">Engineering Independence</span>
+      <span class="pillar-subtitle" contenteditable="true" data-ce="pillar.subtitle" data-pi="independence" data-ph="Pillar subtitle">Reduce the bottleneck on P2P product &amp; engineering for operational fixes.</span>
+    </div>
+    <div class="initiatives-row" data-pillar-id="independence">
+      
+  <div class="initiative" data-init-id="self-serve-bugs" data-pillar-id="independence">
+    <div class="initiative-top">
+      <span class="drag-handle" draggable="true" title="Drag to reorder"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><circle cx="2" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="11" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="11" r="1.4" fill="#c8c5be"></circle></svg></span>
+      <span class="initiative-title" contenteditable="true" data-ce="title" data-pi="independence" data-ii="self-serve-bugs" data-ph="Initiative title" data-sl="1">Self-serve bug fixing via Claude</span>
+      <div class="top-right">
+        <span class="status-badge status-initiated" data-pi="independence" data-ii="self-serve-bugs">
+          <span class="dot"></span><span class="status-text">Initiated</span>
+        </span>
+        <button class="remove-init-btn" data-ii="self-serve-bugs" data-pi="independence" title="Remove">×</button>
+      </div>
+    </div>
+
+    <div class="outcome-box">
+      <span class="outcome-label">🎯 Outcome</span>
+      <span class="outcome-text" contenteditable="true" data-ce="outcome" data-pi="independence" data-ii="self-serve-bugs" data-ph="What does success look like?">Operational fixes shipped in hours, not weeks. P2P product team freed to focus on major features rather than operational noise.</span>
+    </div>
+
+    <span class="initiative-desc" contenteditable="true" data-ce="desc" data-pi="independence" data-ii="self-serve-bugs" data-ph="Describe the initiative">Team upskilling to ship small fixes directly — without routing through the P2P product team.</span>
+
+    <span class="initiative-heading" contenteditable="true" data-ce="heading" data-pi="independence" data-ii="self-serve-bugs" data-ph="Add section heading..." data-sl="1"></span>
+
+    <ul class="subpoints">
+    <li class="sub-item">
+      <span class="sub-text" contenteditable="true" data-ce="sub" data-pi="independence" data-ii="self-serve-bugs" data-si="0" data-ph="Subpoint" data-sl="1">IBAN whitespace stripping</span>
+      <button class="remove-sub-btn" data-pi="independence" data-ii="self-serve-bugs" data-si="0">×</button>
+    </li>
+    <li class="sub-item">
+      <span class="sub-text" contenteditable="true" data-ce="sub" data-pi="independence" data-ii="self-serve-bugs" data-si="1" data-ph="Subpoint" data-sl="1">Payment template fixes</span>
+      <button class="remove-sub-btn" data-pi="independence" data-ii="self-serve-bugs" data-si="1">×</button>
+    </li>
+    <li class="sub-item">
+      <span class="sub-text" contenteditable="true" data-ce="sub" data-pi="independence" data-ii="self-serve-bugs" data-si="2" data-ph="Subpoint" data-sl="1">Routing + account number concatenation</span>
+      <button class="remove-sub-btn" data-pi="independence" data-ii="self-serve-bugs" data-si="2">×</button>
+    </li>
+    <li class="sub-item">
+      <span class="sub-text" contenteditable="true" data-ce="sub" data-pi="independence" data-ii="self-serve-bugs" data-si="3" data-ph="Subpoint" data-sl="1">Norwegian regulatory code handling</span>
+      <button class="remove-sub-btn" data-pi="independence" data-ii="self-serve-bugs" data-si="3">×</button>
+    </li></ul>
+    <button class="add-sub-btn" data-pi="independence" data-ii="self-serve-bugs">+ Add point</button>
+
+    <div class="meta-fields">
+      <div class="meta-row">
+        <span class="meta-icon">👤</span>
+        <span class="assignee-field" contenteditable="true" data-ce="assignee" data-pi="independence" data-ii="self-serve-bugs" data-ph="Assign owner" data-sl="1"></span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-icon">🔗</span>
+        <span class="link-field" data-pi="independence" data-ii="self-serve-bugs">Add Linear link</span>
+      </div>
+    </div>
+
+    
+
+    <div class="deps-section">
+      <div class="dep-row">
+        <span class="dep-label">Carries over from</span>
+        <div class="dep-chips-wrap"><button class="add-dep-btn" data-field="buildsOn" data-pi="independence" data-ii="self-serve-bugs" title="Add connection">+</button></div>
+      </div>
+      <div class="dep-row">
+        <span class="dep-label">Feeds into</span>
+        <div class="dep-chips-wrap">
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">→</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="feedsInto" data-pi="independence" data-ii="self-serve-bugs" data-di="0" data-ph="Connection" data-sl="1">Expand team engineering capabilities</span>
+      <button class="remove-dep-btn" data-field="feedsInto" data-pi="independence" data-ii="self-serve-bugs" data-di="0" title="Remove">×</button>
+    </span><button class="add-dep-btn" data-field="feedsInto" data-pi="independence" data-ii="self-serve-bugs" title="Add connection">+</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="initiative" data-init-id="eng-capabilities" data-pillar-id="independence">
+    <div class="initiative-top">
+      <span class="drag-handle" draggable="true" title="Drag to reorder"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><circle cx="2" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="2" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="6.5" r="1.4" fill="#c8c5be"></circle><circle cx="2" cy="11" r="1.4" fill="#c8c5be"></circle><circle cx="6" cy="11" r="1.4" fill="#c8c5be"></circle></svg></span>
+      <span class="initiative-title" contenteditable="true" data-ce="title" data-pi="independence" data-ii="eng-capabilities" data-ph="Initiative title" data-sl="1">Expand team engineering capabilities</span>
+      <div class="top-right">
+        <span class="status-badge status-planned" data-pi="independence" data-ii="eng-capabilities">
+          <span class="dot"></span><span class="status-text">Planned</span>
+        </span>
+        <button class="remove-init-btn" data-ii="eng-capabilities" data-pi="independence" title="Remove">×</button>
+      </div>
+    </div>
+
+    <div class="outcome-box">
+      <span class="outcome-label">🎯 Outcome</span>
+      <span class="outcome-text" contenteditable="true" data-ce="outcome" data-pi="independence" data-ii="eng-capabilities" data-ph="What does success look like?">Team independently owns and operates a meaningful share of the stack. Engineering handoff delays reduced significantly.</span>
+    </div>
+
+    <span class="initiative-desc" contenteditable="true" data-ce="desc" data-pi="independence" data-ii="eng-capabilities" data-ph="Describe the initiative">Identify and onboard engineering capacity the team can own and operate independently — reducing handoff delays and information loss.</span>
+
+    <span class="initiative-heading" contenteditable="true" data-ce="heading" data-pi="independence" data-ii="eng-capabilities" data-ph="Add section heading..." data-sl="1"></span>
+
+    <ul class="subpoints"></ul>
+    <button class="add-sub-btn" data-pi="independence" data-ii="eng-capabilities">+ Add point</button>
+
+    <div class="meta-fields">
+      <div class="meta-row">
+        <span class="meta-icon">👤</span>
+        <span class="assignee-field" contenteditable="true" data-ce="assignee" data-pi="independence" data-ii="eng-capabilities" data-ph="Assign owner" data-sl="1"></span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-icon">🔗</span>
+        <span class="link-field" data-pi="independence" data-ii="eng-capabilities">Add Linear link</span>
+      </div>
+    </div>
+
+    
+
+    <div class="deps-section">
+      <div class="dep-row">
+        <span class="dep-label">Carries over from</span>
+        <div class="dep-chips-wrap">
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">←</span>
+      <span class="dep-chip-text" contenteditable="true" data-ce="dep" data-field="buildsOn" data-pi="independence" data-ii="eng-capabilities" data-di="0" data-ph="Connection" data-sl="1">Self-serve bug fixing via Claude</span>
+      <button class="remove-dep-btn" data-field="buildsOn" data-pi="independence" data-ii="eng-capabilities" data-di="0" title="Remove">×</button>
+    </span><button class="add-dep-btn" data-field="buildsOn" data-pi="independence" data-ii="eng-capabilities" title="Add connection">+</button></div>
+      </div>
+      <div class="dep-row">
+        <span class="dep-label">Feeds into</span>
+        <div class="dep-chips-wrap"><button class="add-dep-btn" data-field="feedsInto" data-pi="independence" data-ii="eng-capabilities" title="Add connection">+</button></div>
+      </div>
+    </div>
+  </div>
+      <button class="add-init-btn" data-pi="independence" title="Add initiative">+</button>
+    </div>
+  </div></div>
+
+<script>
+/* ─── DATA (buildsOn / feedsInto are now free-text strings) ─ */
+const DEFAULTS = [
+  { id:'bank', colorClass:'p1', icon:'🏦', title:'Faster & Better Bank Integrations', subtitle:'Cut 8–12 week timelines. Reduce AMC dependency & file format blind spots.',
+    initiatives:[
+      { id:'amc-dive',   status:'initiated', title:'Deep-dive on AMC mechanics',            desc:'Closing knowledge gaps on AMC to reduce bugs, unknown failure modes, and consultant dependency across all three major connection types.', outcome:'Team independently diagnoses and resolves AMC issues without consultant support. Integration failures from AMC unknowns reduced measurably.',              heading:'Initiated', subpoints:['Bi-weekly sessions with AMC consultants — direct line + service desk','Dedicated sessions on SFTP, EBICS & Bank Connect agreements'], assignee:'', linearLink:'',   prototypeLink:'',  buildsOn:[], feedsInto:['Direct API integrations — top 5 banks','XML file structure testing tool','Payment self-service endpoint'] },
+      { id:'xml-tool',   status:'planned',   title:'XML file structure testing tool',        desc:'Validate payment file structures across banks, countries, and regulatory codes — without needing a live integration.',                  outcome:'Payment file structures validated in minutes, not days. Format errors eliminated as a primary source of integration delays.',               subpoints:[], assignee:'', linearLink:'', prototypeLink:'https://claude.ai/public/artifacts/aacd4f19-86f2-49ec-b317-33c6934909d1', buildsOn:['Deep-dive on AMC mechanics'], feedsInto:['Direct API integrations — top 5 banks'] },
+      { id:'direct-api', status:'planned',   title:'Direct API integrations — top 5 banks', desc:'Direct integrations outside of AMC for the 5 banks making up the bulk of our volume — modelled on the Danske Bank approach.',          outcome:'Integration timeline cut from 8–12 weeks to under 3 weeks for top-5 banks. AMC removed as single point of failure for high-volume integrations.', subpoints:[], assignee:'', linearLink:'', prototypeLink:'', buildsOn:['Deep-dive on AMC mechanics','XML file structure testing tool'], feedsInto:[] }
+    ]},
+  { id:'payment-flow', colorClass:'p2', icon:'⚡', title:'Smoother Payment Flow', subtitle:'Reduce ops overhead from failing & stuck payments. Faster resolution for customers.',
+    initiatives:[
+      { id:'self-service',   status:'initiated', title:'Payment self-service endpoint',               desc:"Lets the payments team retrigger, mark as paid, or clear stuck payments — without going through engineering.",        outcome:'Payments team resolves stuck/failed payments in under 1 hour without engineering involvement. Measurable reduction in CS escalations.',      subpoints:[], assignee:'', linearLink:'https://linear.app/lightinc/issue/PRO2-1/limiting-retriggering-of-client-payments', prototypeLink:'', buildsOn:['Deep-dive on AMC mechanics'], feedsInto:['Error white-/blacklisting & auto-retrigger','Unified customer status dashboard'] },
+      { id:'llm-errors',     status:'initiated', title:'Improved LLM error translation',              desc:'Replace cryptic bank error codes with clear, customer-friendly messages that include actionable next steps.',         outcome:'Customers receive clear, actionable error messages. Reduction in support contacts per failed payment.',                                         subpoints:[], assignee:'', linearLink:'', prototypeLink:'', buildsOn:[], feedsInto:['Error white-/blacklisting & auto-retrigger'] },
+      { id:'vop',            status:'initiated', title:'Verification of Payee (VoP)',                desc:'Implement VoP and internal validation standards to catch issues before payments are submitted.',                      outcome:'Payment failure rate reduced through pre-submission validation. Compliance with emerging VoP regulatory requirements.',                        subpoints:[], assignee:'', linearLink:'', prototypeLink:'', buildsOn:[], feedsInto:['Error white-/blacklisting & auto-retrigger'] },
+      { id:'auto-retrigger', status:'initiated', title:'Error white-/blacklisting & auto-retrigger', desc:'Auto-retrigger payments that fail for known, safe reasons. 4-eyes accounting principle enforced.',                  outcome:'Known-safe payment failures auto-retrigger without human intervention. Significant reduction in manually handled failures per week.',          subpoints:[], assignee:'', linearLink:'', prototypeLink:'', buildsOn:['Payment self-service endpoint','Improved LLM error translation','Verification of Payee (VoP)'], feedsInto:[] }
+    ]},
+  { id:'tooling', colorClass:'p3', icon:'🛠️', title:'Better Internal Tooling', subtitle:'Too many tools, too much noise. Consolidate to ship faster.',
+    initiatives:[
+      { id:'dashboard', status:'initiated', title:'Unified customer status dashboard', desc:'Single view aggregating signals from Slack, Gmail, Linear, XtendLink, AMC & GitHub — filtered per customer.', outcome:"Single source of truth for every customer's integration status. Team spends 50%+ less time context-switching across tools.", subpoints:['Eliminates context-switching across 6+ tools','Surfaces blockers and outstanding items without manual chasing'], assignee:'', linearLink:'', prototypeLink:'', buildsOn:['Payment self-service endpoint'], feedsInto:[] }
+    ]},
+  { id:'independence', colorClass:'p4', icon:'🚀', title:'Engineering Independence', subtitle:'Reduce the bottleneck on P2P product & engineering for operational fixes.',
+    initiatives:[
+      { id:'self-serve-bugs',  status:'initiated', title:'Self-serve bug fixing via Claude',      desc:'Team upskilling to ship small fixes directly — without routing through the P2P product team.',                                        outcome:'Operational fixes shipped in hours, not weeks. P2P product team freed to focus on major features rather than operational noise.',  subpoints:['IBAN whitespace stripping','Payment template fixes','Routing + account number concatenation','Norwegian regulatory code handling'], assignee:'', linearLink:'', prototypeLink:'', buildsOn:[], feedsInto:['Expand team engineering capabilities'] },
+      { id:'eng-capabilities', status:'planned',   title:'Expand team engineering capabilities', desc:'Identify and onboard engineering capacity the team can own and operate independently — reducing handoff delays and information loss.',  outcome:'Team independently owns and operates a meaningful share of the stack. Engineering handoff delays reduced significantly.',              subpoints:[], assignee:'', linearLink:'', prototypeLink:'', buildsOn:['Self-serve bug fixing via Claude'], feedsInto:[] }
+    ]}
+];
+
+const ACCENT       = { p1:'#d97706', p2:'#16a34a', p3:'#2563eb', p4:'#db2777' };
+const LIGHT        = { p1:'#fffbeb', p2:'#f0fdf4', p3:'#eff6ff', p4:'#fdf2f8' };
+const STATUS_CYCLE  = ['initiated','planned','done'];
+const STATUS_LABELS = { initiated:'Initiated', planned:'Planned', done:'Done' };
+
+/* ─── STATE ────────────────────────────────────────────── */
+let STATE = null;
+const LS_KEY = 'roadmap:v4:state'; // bumped to v4 — fresh start with text deps
+
+function loadState() {
+  try { const s=localStorage.getItem(LS_KEY); if(s){ STATE=JSON.parse(s); return; } } catch {}
+  STATE = { header:{ title:'Payments &amp; Integrations Roadmap', sub:'Q3–Q4 2026 &nbsp;·&nbsp; Internal &nbsp;·&nbsp; Payments, Tech Delivery &amp; Integration' }, pillars:JSON.parse(JSON.stringify(DEFAULTS)) };
+}
+function saveState() { try { localStorage.setItem(LS_KEY, JSON.stringify(STATE)); } catch {} }
+function getPillar(pid) { return STATE.pillars.find(p=>p.id===pid); }
+function getInit(pid,iid) { return getPillar(pid).initiatives.find(i=>i.id===iid); }
+
+/* ─── ICONS ────────────────────────────────────────────── */
+function extIcon() { return `<svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M8 1h3m0 0v3m0-3L5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`; }
+function gripIcon() { return `<svg width="8" height="13" viewBox="0 0 8 13" fill="none"><circle cx="2" cy="2" r="1.4" fill="#c8c5be"/><circle cx="6" cy="2" r="1.4" fill="#c8c5be"/><circle cx="2" cy="6.5" r="1.4" fill="#c8c5be"/><circle cx="6" cy="6.5" r="1.4" fill="#c8c5be"/><circle cx="2" cy="11" r="1.4" fill="#c8c5be"/><circle cx="6" cy="11" r="1.4" fill="#c8c5be"/></svg>`; }
+
+/* ─── BUILD DEPS HTML ──────────────────────────────────── */
+function buildDepChipsHTML(items, field, pid, iid) {
+  const arrow = field === 'buildsOn' ? '←' : '→';
+  const chips = items.map((text, di) => `
+    <span class="dep-chip-wrap">
+      <span class="dep-arrow">${arrow}</span>
+      <span class="dep-chip-text" contenteditable="true"
+        data-ce="dep" data-field="${field}" data-pi="${pid}" data-ii="${iid}" data-di="${di}"
+        data-ph="Connection" data-sl="1">${text}</span>
+      <button class="remove-dep-btn" data-field="${field}" data-pi="${pid}" data-ii="${iid}" data-di="${di}" title="Remove">×</button>
+    </span>`).join('');
+
+  return chips + `<button class="add-dep-btn" data-field="${field}" data-pi="${pid}" data-ii="${iid}" title="Add connection">+</button>`;
+}
+
+/* ─── BUILD INIT HTML ──────────────────────────────────── */
+function buildInitHTML(init, pillar) {
+  const subHTML = init.subpoints.map((s,n)=>`
+    <li class="sub-item">
+      <span class="sub-text" contenteditable="true" data-ce="sub" data-pi="${pillar.id}" data-ii="${init.id}" data-si="${n}" data-ph="Subpoint" data-sl="1">${s}</span>
+      <button class="remove-sub-btn" data-pi="${pillar.id}" data-ii="${init.id}" data-si="${n}">×</button>
+    </li>`).join('');
+
+  const proto = init.prototypeLink ? `<div class="static-links"><a class="static-link-chip" href="${init.prototypeLink}" target="_blank">${extIcon()} Prototype</a></div>` : '';
+
+  return `
+  <div class="initiative" data-init-id="${init.id}" data-pillar-id="${pillar.id}">
+    <div class="initiative-top">
+      <span class="drag-handle" draggable="true" title="Drag to reorder">${gripIcon()}</span>
+      <span class="initiative-title" contenteditable="true" data-ce="title" data-pi="${pillar.id}" data-ii="${init.id}" data-ph="Initiative title" data-sl="1">${init.title}</span>
+      <div class="top-right">
+        <span class="status-badge status-${init.status}" data-pi="${pillar.id}" data-ii="${init.id}">
+          <span class="dot"></span><span class="status-text">${STATUS_LABELS[init.status]}</span>
+        </span>
+        <button class="remove-init-btn" data-ii="${init.id}" data-pi="${pillar.id}" title="Remove">×</button>
+      </div>
+    </div>
+
+    <div class="outcome-box">
+      <span class="outcome-label">🎯 Outcome</span>
+      <span class="outcome-text" contenteditable="true" data-ce="outcome" data-pi="${pillar.id}" data-ii="${init.id}" data-ph="What does success look like?">${init.outcome}</span>
+    </div>
+
+    <span class="initiative-desc" contenteditable="true" data-ce="desc" data-pi="${pillar.id}" data-ii="${init.id}" data-ph="Describe the initiative">${init.desc}</span>
+
+    <span class="initiative-heading" contenteditable="true" data-ce="heading" data-pi="${pillar.id}" data-ii="${init.id}" data-ph="Add section heading..." data-sl="1">${init.heading||''}</span>
+
+    <ul class="subpoints">${subHTML}</ul>
+    <button class="add-sub-btn" data-pi="${pillar.id}" data-ii="${init.id}">+ Add point</button>
+
+    <div class="meta-fields">
+      <div class="meta-row">
+        <span class="meta-icon">👤</span>
+        <span class="assignee-field" contenteditable="true" data-ce="assignee" data-pi="${pillar.id}" data-ii="${init.id}" data-ph="Assign owner" data-sl="1">${init.assignee}</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-icon">🔗</span>
+        <span class="link-field" data-pi="${pillar.id}" data-ii="${init.id}"></span>
+      </div>
+    </div>
+
+    ${proto}
+
+    <div class="deps-section">
+      <div class="dep-row">
+        <span class="dep-label">Carries over from</span>
+        <div class="dep-chips-wrap">${buildDepChipsHTML(init.buildsOn||[], 'buildsOn', pillar.id, init.id)}</div>
+      </div>
+      <div class="dep-row">
+        <span class="dep-label">Feeds into</span>
+        <div class="dep-chips-wrap">${buildDepChipsHTML(init.feedsInto||[], 'feedsInto', pillar.id, init.id)}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildPillarHTML(pillar) {
+  return `
+  <div class="pillar-row" data-pillar-id="${pillar.id}">
+    <div class="pillar-label" style="border-left:3px solid ${ACCENT[pillar.colorClass]}">
+      <div class="pillar-icon" style="background:${LIGHT[pillar.colorClass]}">${pillar.icon}</div>
+      <span class="pillar-title" contenteditable="true" data-ce="pillar.title" data-pi="${pillar.id}" data-ph="Pillar title" data-sl="1">${pillar.title}</span>
+      <span class="pillar-subtitle" contenteditable="true" data-ce="pillar.subtitle" data-pi="${pillar.id}" data-ph="Pillar subtitle">${pillar.subtitle}</span>
+    </div>
+    <div class="initiatives-row" data-pillar-id="${pillar.id}">
+      ${pillar.initiatives.map(i=>buildInitHTML(i,pillar)).join('')}
+      <button class="add-init-btn" data-pi="${pillar.id}" title="Add initiative">+</button>
+    </div>
+  </div>`;
+}
+
+/* ─── RENDER ───────────────────────────────────────────── */
+function render() {
+  document.getElementById('roadmap').innerHTML = STATE.pillars.map(buildPillarHTML).join('');
+  const h1=document.querySelector('[data-ce="header.title"]'), sub=document.querySelector('[data-ce="header.sub"]');
+  if(h1) h1.innerHTML=STATE.header.title; if(sub) sub.innerHTML=STATE.header.sub;
+  attachAll();
+}
+function rerenderPillar(pid) {
+  const el=document.querySelector(`.pillar-row[data-pillar-id="${pid}"]`);
+  const tmp=document.createElement('div'); tmp.innerHTML=buildPillarHTML(getPillar(pid));
+  el.replaceWith(tmp.firstElementChild); attachAll();
+}
+function rerenderCard(pid,iid) {
+  const pillar=getPillar(pid), init=getInit(pid,iid);
+  const card=document.querySelector(`[data-init-id="${iid}"]`); if(!card) return;
+  const tmp=document.createElement('div'); tmp.innerHTML=buildInitHTML(init,pillar);
+  card.replaceWith(tmp.firstElementChild); attachAll();
+}
+
+/* ─── DRAG & DROP ──────────────────────────────────────── */
+let DRAG = null;
+function attachDragDrop() {
+  document.querySelectorAll('.drag-handle').forEach(handle => {
+    handle.addEventListener('dragstart', e => {
+      const card=handle.closest('.initiative');
+      DRAG={pid:card.dataset.pillarId, iid:card.dataset.initId};
+      e.dataTransfer.effectAllowed='move';
+      e.dataTransfer.setData('text/plain', DRAG.iid);
+      e.dataTransfer.setDragImage(card,20,20);
+      setTimeout(()=>card.classList.add('is-dragging'),0);
+    });
+    handle.addEventListener('dragend', ()=>{
+      document.querySelectorAll('.initiative.is-dragging').forEach(c=>c.classList.remove('is-dragging'));
+      document.querySelectorAll('.drop-indicator').forEach(el=>el.remove());
+      DRAG=null;
+    });
+  });
+  document.querySelectorAll('.initiatives-row').forEach(row=>{
+    row.addEventListener('dragover', e=>{
+      e.preventDefault(); if(!DRAG) return;
+      e.dataTransfer.dropEffect='move';
+      updateIndicator(row,e.clientX);
+    });
+    row.addEventListener('dragleave', e=>{ if(!row.contains(e.relatedTarget)) row.querySelectorAll('.drop-indicator').forEach(el=>el.remove()); });
+    row.addEventListener('drop', e=>{
+      e.preventDefault(); document.querySelectorAll('.drop-indicator').forEach(el=>el.remove());
+      if(!DRAG) return;
+      const targetPid=row.dataset.pillarId, {pid:srcPid,iid}=DRAG;
+      const dropIdx=getDropIdx(row,e.clientX,iid);
+      const src=getPillar(srcPid), moving=getInit(srcPid,iid);
+      src.initiatives=src.initiatives.filter(i=>i.id!==iid);
+      getPillar(targetPid).initiatives.splice(dropIdx,0,moving);
+      saveState();
+      if(srcPid===targetPid) rerenderPillar(srcPid);
+      else { rerenderPillar(srcPid); rerenderPillar(targetPid); }
+      DRAG=null;
+    });
+  });
+}
+function updateIndicator(row,clientX) {
+  document.querySelectorAll('.drop-indicator').forEach(el=>el.remove());
+  const cards=[...row.querySelectorAll('.initiative')].filter(c=>c.dataset.initId!==DRAG?.iid);
+  let insertBefore=row.querySelector('.add-init-btn');
+  for(const card of cards){ const r=card.getBoundingClientRect(); if(clientX<r.left+r.width/2){insertBefore=card;break;} }
+  const ind=document.createElement('div'); ind.className='drop-indicator';
+  row.insertBefore(ind,insertBefore);
+}
+function getDropIdx(row,clientX,dragIid) {
+  const cards=[...row.querySelectorAll('.initiative')].filter(c=>c.dataset.initId!==dragIid);
+  for(let i=0;i<cards.length;i++){ const r=cards[i].getBoundingClientRect(); if(clientX<r.left+r.width/2) return i; }
+  return cards.length;
+}
+
+/* ─── ALL LISTENERS ────────────────────────────────────── */
+function attachAll() {
+  /* CE fields */
+  document.querySelectorAll('[data-ce]:not([data-ce^="header"])').forEach(el=>{
+    el.addEventListener('blur',()=>{
+      const {ce,pi,ii,si,field,di}=el.dataset, val=el.dataset.sl?el.textContent.trim():el.innerHTML;
+      if(ce==='pillar.title')    getPillar(pi).title=val;
+      else if(ce==='pillar.subtitle') getPillar(pi).subtitle=val;
+      else if(ce==='sub')        getInit(pi,ii).subpoints[+si]=el.textContent.trim();
+      else if(ce==='dep')        getInit(pi,ii)[field][+di]=el.textContent.trim();
+      else                       getInit(pi,ii)[ce]=val;
+      saveState();
+    });
+    if(el.dataset.sl) el.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();el.blur();} });
+  });
+
+  /* Header */
+  ['header.title','header.sub'].forEach(key=>{
+    const el=document.querySelector(`[data-ce="${key}"]`); if(!el) return;
+    el.addEventListener('blur',()=>{ STATE.header[key.split('.')[1]]=el.dataset.sl?el.textContent:el.innerHTML; saveState(); });
+    if(el.dataset.sl) el.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();el.blur();} });
+  });
+
+  /* Status cycling */
+  document.querySelectorAll('.status-badge[data-ii]').forEach(badge=>{
+    badge.addEventListener('click',()=>{
+      const init=getInit(badge.dataset.pi,badge.dataset.ii);
+      init.status=STATUS_CYCLE[(STATUS_CYCLE.indexOf(init.status)+1)%STATUS_CYCLE.length];
+      saveState();
+      STATUS_CYCLE.forEach(s=>badge.classList.remove('status-'+s));
+      badge.classList.add('status-'+init.status);
+      badge.querySelector('.status-text').textContent=STATUS_LABELS[init.status];
+    });
+  });
+
+  /* Linear link */
+  function setLinkDisplay(el,val){ if(val){el.classList.add('has-value');const label=val.toLowerCase().includes('linear')?'Linear':'Link';el.innerHTML=`<a href="${val}" target="_blank" onclick="event.stopPropagation()">${extIcon()} ${label} ↗</a>`;}else{el.classList.remove('has-value');el.textContent='Add Linear link';} }
+  document.querySelectorAll('.link-field').forEach(el=>{
+    const {pi,ii}=el.dataset; setLinkDisplay(el,getInit(pi,ii).linearLink||'');
+    el.addEventListener('click',e=>{
+      if(e.target.tagName==='A') return;
+      const cur=getInit(pi,ii).linearLink||'';
+      const input=document.createElement('input'); input.type='url'; input.value=cur; input.placeholder='Paste Linear or other URL…'; input.className='inline-input';
+      el.parentNode.insertBefore(input,el); el.style.display='none'; input.focus(); if(cur) input.select();
+      function commit(){ const v=input.value.trim(); getInit(pi,ii).linearLink=v; saveState(); input.remove(); el.style.display=''; setLinkDisplay(el,v); }
+      input.addEventListener('blur',commit);
+      input.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();input.blur();} if(e.key==='Escape'){input.remove();el.style.display='';} });
+    });
+  });
+
+  /* Add dep chip */
+  document.querySelectorAll('.add-dep-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const {field,pi,ii}=btn.dataset;
+      getInit(pi,ii)[field].push('');
+      saveState(); rerenderCard(pi,ii);
+      setTimeout(()=>{
+        const card=document.querySelector(`[data-init-id="${ii}"]`);
+        const chips=card?.querySelectorAll(`[data-ce="dep"][data-field="${field}"]`);
+        if(chips?.length) chips[chips.length-1].focus();
+      },50);
+    });
+  });
+
+  /* Remove dep chip */
+  document.querySelectorAll('.remove-dep-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const {field,pi,ii,di}=btn.dataset;
+      getInit(pi,ii)[field].splice(+di,1);
+      saveState(); rerenderCard(pi,ii);
+    });
+  });
+
+  /* Add initiative */
+  document.querySelectorAll('.add-init-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const pid=btn.dataset.pi;
+      const n={id:'custom-'+Date.now(),status:'planned',title:'',desc:'',outcome:'',heading:'',subpoints:[],assignee:'',linearLink:'',prototypeLink:'',buildsOn:[],feedsInto:[]};
+      getPillar(pid).initiatives.push(n); saveState(); rerenderPillar(pid);
+      setTimeout(()=>{ document.querySelector(`[data-init-id="${n.id}"] .initiative-title`)?.focus(); },50);
+    });
+  });
+
+  /* Remove initiative */
+  document.querySelectorAll('.remove-init-btn').forEach(btn=>{
+    btn.addEventListener('click',e=>{ e.stopPropagation(); const {pi,ii}=btn.dataset; getPillar(pi).initiatives=getPillar(pi).initiatives.filter(i=>i.id!==ii); saveState(); rerenderPillar(pi); });
+  });
+
+  /* Add subpoint */
+  document.querySelectorAll('.add-sub-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const {pi,ii}=btn.dataset; getInit(pi,ii).subpoints.push(''); saveState(); rerenderCard(pi,ii);
+      setTimeout(()=>{ const c=document.querySelector(`[data-init-id="${ii}"]`); const s=c?.querySelectorAll('.sub-text'); if(s?.length) s[s.length-1].focus(); },50);
+    });
+  });
+
+  /* Remove subpoint */
+  document.querySelectorAll('.remove-sub-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{ const {pi,ii,si}=btn.dataset; getInit(pi,ii).subpoints.splice(+si,1); saveState(); rerenderCard(pi,ii); });
+  });
+
+  attachDragDrop();
+}
+
+/* ─── BOOT ──────────────────────────────────────────────── */
+loadState();
+render();
+</script>
+
+
+</body></html>
